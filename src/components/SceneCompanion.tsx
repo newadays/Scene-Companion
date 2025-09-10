@@ -23,6 +23,11 @@ export interface SceneEntity {
   description: string;
   details: {
     info: string;
+    clickableItems?: Array<{
+      name: string;
+      description: string;
+      category?: string;
+    }>;
     actions: SceneAction[];
   };
 }
@@ -35,6 +40,11 @@ const sceneEntities: SceneEntity[] = [
     description: 'Cast and crew information',
     details: {
       info: 'Main cast includes Emma Stone, Ryan Gosling, and director Damien Chazelle. This scene features improvised dialogue between the leads.',
+      clickableItems: [
+        { name: 'Emma Stone', description: 'Lead actress playing Mia', category: 'Actor' },
+        { name: 'Ryan Gosling', description: 'Lead actor playing Sebastian', category: 'Actor' },
+        { name: 'Damien Chazelle', description: 'Director and writer', category: 'Director' }
+      ],
       actions: [
         {
           type: 'learn',
@@ -79,6 +89,11 @@ const sceneEntities: SceneEntity[] = [
     description: 'Script and conversation analysis',
     details: {
       info: 'This dialogue explores themes of dreams vs. reality, with subtle references to classic Hollywood musicals.',
+      clickableItems: [
+        { name: 'Dreams vs Reality', description: 'Central thematic dialogue', category: 'Theme' },
+        { name: 'Hollywood Musical References', description: 'Classic film callbacks', category: 'Reference' },
+        { name: 'Improvised Lines', description: 'Spontaneous dialogue moments', category: 'Technique' }
+      ],
       actions: [
         {
           type: 'learn',
@@ -123,6 +138,12 @@ const sceneEntities: SceneEntity[] = [
     description: 'Story structure and narrative analysis',
     details: {
       info: 'This pivotal scene represents the climactic moment where both characters must choose between love and ambition. The narrative structure follows classic three-act storytelling with musical interludes that advance the plot.',
+      clickableItems: [
+        { name: 'Love vs Ambition', description: 'Core conflict of the characters', category: 'Theme' },
+        { name: 'Three-Act Structure', description: 'Classical narrative framework', category: 'Structure' },
+        { name: 'Musical Interludes', description: 'Songs that advance the story', category: 'Device' },
+        { name: 'Climactic Moment', description: 'Peak emotional tension', category: 'Plot Point' }
+      ],
       actions: [
         {
           type: 'learn',
@@ -167,6 +188,12 @@ const sceneEntities: SceneEntity[] = [
     description: 'Cultural and societal themes',
     details: {
       info: 'The film explores themes of artistic integrity vs. commercial success, gender dynamics in creative industries, and the gentrification of Los Angeles. This scene particularly highlights the tension between personal dreams and economic reality.',
+      clickableItems: [
+        { name: 'Artistic Integrity vs Commercial Success', description: 'Central creative industry tension', category: 'Industry Theme' },
+        { name: 'Gender Dynamics', description: 'Male and female perspectives in creative fields', category: 'Social Issue' },
+        { name: 'LA Gentrification', description: 'Urban development and cultural change', category: 'Urban Issue' },
+        { name: 'Economic Reality vs Dreams', description: 'Financial pressures on artists', category: 'Economic Theme' }
+      ],
       actions: [
         {
           type: 'learn',
@@ -211,6 +238,12 @@ const sceneEntities: SceneEntity[] = [
     description: 'Visual metaphors and symbolic meaning',
     details: {
       info: 'Rich symbolism throughout this scene includes the contrast between warm and cool lighting representing emotional states, the recurring star motifs symbolizing dreams and aspiration, and the physical elevation of the observatory representing both literal and metaphorical heights.',
+      clickableItems: [
+        { name: 'Warm vs Cool Lighting', description: 'Emotional state representation', category: 'Visual Symbol' },
+        { name: 'Star Motifs', description: 'Dreams and aspiration symbols', category: 'Visual Symbol' },
+        { name: 'Observatory Elevation', description: 'Literal and metaphorical heights', category: 'Spatial Symbol' },
+        { name: 'Color Contrasts', description: 'Emotional storytelling through color', category: 'Visual Symbol' }
+      ],
       actions: [
         {
           type: 'learn',
@@ -255,6 +288,12 @@ const sceneEntities: SceneEntity[] = [
     description: 'Filming locations and settings',
     details: {
       info: 'Filmed at Griffith Observatory, Los Angeles. This iconic location has appeared in numerous Hollywood films.',
+      clickableItems: [
+        { name: 'Griffith Observatory', description: 'Main filming location', category: 'Primary Location' },
+        { name: 'Los Angeles', description: 'City setting and context', category: 'City' },
+        { name: 'Observatory Dome', description: 'Iconic architectural feature', category: 'Architecture' },
+        { name: 'Hollywood Hills', description: 'Surrounding landscape', category: 'Landscape' }
+      ],
       actions: [
         {
           type: 'learn',
@@ -299,6 +338,12 @@ const sceneEntities: SceneEntity[] = [
     description: 'Fashion and costume design',
     details: {
       info: 'Vintage-inspired wardrobe designed by Mary Zophres, featuring 1950s silhouettes with modern fabrics.',
+      clickableItems: [
+        { name: 'Emma\'s Yellow Dress', description: 'Iconic flowing vintage dress', category: 'Costume' },
+        { name: 'Ryan\'s Blue Suit', description: 'Classic 1950s style suit', category: 'Costume' },
+        { name: '1950s Silhouettes', description: 'Period-accurate fashion shapes', category: 'Style' },
+        { name: 'Mary Zophres Design', description: 'Costume designer\'s vision', category: 'Designer' }
+      ],
       actions: [
         {
           type: 'learn',
@@ -343,6 +388,12 @@ const sceneEntities: SceneEntity[] = [
     description: 'Items featured in the scene',
     details: {
       info: 'Vintage-style car, jazz piano, classic cocktails, and period-appropriate accessories are prominently featured.',
+      clickableItems: [
+        { name: 'Vintage Car', description: 'Classic 1950s automobile', category: 'Vehicle' },
+        { name: 'Jazz Piano', description: 'Period-appropriate musical instrument', category: 'Instrument' },
+        { name: 'Classic Cocktails', description: 'Era-specific drinks and beverages', category: 'Beverage' },
+        { name: 'Period Accessories', description: 'Authentic 1950s accessories', category: 'Accessories' }
+      ],
       actions: [
         {
           type: 'buy',
@@ -526,9 +577,34 @@ export function SceneCompanion({ isVisible, onClose }: SceneCompanionProps) {
               
               <div>
                 <h4 className="mb-3">Information</h4>
-                <p className="text-muted-foreground leading-relaxed">
+                <p className="text-muted-foreground leading-relaxed mb-4">
                   {selectedEntity.details.info}
                 </p>
+                {selectedEntity.details.clickableItems && (
+                  <div className="space-y-3">
+                    <h5 className="text-sm font-medium text-muted-foreground">Featured in this scene:</h5>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedEntity.details.clickableItems.map((item, index) => (
+                        <Button
+                          key={index}
+                          variant="outline"
+                          size="sm"
+                          className="h-auto p-3 flex-col gap-1 hover:border-primary group"
+                        >
+                          <span className="font-medium">{item.name}</span>
+                          <span className="text-xs text-muted-foreground group-hover:text-primary/80">
+                            {item.description}
+                          </span>
+                          {item.category && (
+                            <Badge variant="secondary" className="text-xs mt-1">
+                              {item.category}
+                            </Badge>
+                          )}
+                        </Button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
               
               <div>

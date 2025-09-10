@@ -1,6 +1,6 @@
 
   {
-      "name": "Scene Companion",
+      "name": "Scene Companion UI",
       "version": "0.1.0",
       "private": true,
       "dependencies": {
@@ -54,8 +54,6 @@
       },
       "scripts": {
           "dev": "vite",
-          "build": "vite build --output public"
+          "build": "vite build"
       }
   }
-
-  
